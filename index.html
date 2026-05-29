@@ -1,1 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <h2>AI Study Assistant</h2>
+
+            <div class="nav-links">
+                <button onclick="showPage('landing')">Home</button>
+                <button onclick="showPage('dashboard')">Dashboard</button>
+                <button onclick="showPage('chat')">Chat</button>
+                <button onclick="showPage('quiz')">Quiz</button>
+                <button onclick="showPage('notes')">Notes</button>
+                <button onclick="showPage('progress')">Progress</button>
+                <button onclick="showPage('pricing')">Pricing</button>
+                <button onclick="showPage('profile')">Profile</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Landing Page -->
+    <section id="landing" class="page">
+        <h1>Study Smarter With AI</h1>
+        <p>Chat, Quiz, Notes and Progress Tracking in one place.</p>
+
+        <button onclick="showPage('dashboard')">
+            Start Free
+        </button>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="page hidden">
+        <h1>Dashboard</h1>
+
+        <div class="card-container">
+
+            <div class="card">
+                <h3>📚 New Chat</h3>
+                <button onclick="showPage('chat')">Open</button>
+            </div>
+
+            <div class="card">
+                <h3>🧠 Quiz</h3>
+                <button onclick="showPage('quiz')">Open</button>
+            </div>
+
+            <div class="card">
+                <h3>📝 Notes</h3>
+                <button onclick="showPage('notes')">Open</button>
+            </div>
+
+            <div class="card">
+                <h3>📊 Progress</h3>
+                <button onclick="showPage('progress')">Open</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Chat -->
+    <section id="chat" class="page hidden">
+        <h1>AI Chat</h1>
+
+        <select>
+            <option>Math</option>
+            <option>Science</option>
+            <option>English</option>
+            <option>History</option>
+        </select>
+
+        <div id="chatBox">
+            <p>AI responses will appear here...</p>
+        </div>
+
+        <input
+            type="text"
+            id="messageInput"
+            placeholder="Ask anything..."
+        >
+
+        <button onclick="sendMessage()">
+            Send
+        </button>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz" class="page hidden">
+        <h1>Quiz</h1>
+
+        <select>
+            <option>Math</option>
+            <option>Science</option>
+            <option>English</option>
+        </select>
+
+        <button>
+            Start Quiz
+        </button>
+
+        <div id="quizArea">
+            Quiz Questions Here
+        </div>
+    </section>
+
+    <!-- Notes -->
+    <section id="notes" class="page hidden">
+        <h1>My Notes</h1>
+
+        <textarea
+            id="noteInput"
+            placeholder="Write note..."
+        ></textarea>
+
+        <button onclick="saveNote()">
+            Save Note
+        </button>
+
+        <div id="notesList"></div>
+    </section>
+
+    <!-- Progress -->
+    <section id="progress" class="page hidden">
+        <h1>Progress</h1>
+
+        <div class="stats">
+            <p>Total Chats: <span id="totalChats">0</span></p>
+            <p>Total Notes: <span id="totalNotes">0</span></p>
+            <p>Quiz Score: <span id="quizScore">0</span></p>
+            <p>Daily Streak: <span id="streak">0</span></p>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="page hidden">
+        <h1>Pricing</h1>
+
+        <div class="plan">
+            <h2>Free</h2>
+            <ul>
+                <li>20 Messages / Day</li>
+                <li>5 Notes</li>
+                <li>Basic Quiz</li>
+            </ul>
+        </div>
+
+        <div class="plan premium">
+            <h2>Premium ₹99 / Month</h2>
+            <ul>
+                <li>Unlimited Messages</li>
+                <li>Unlimited Notes</li>
+                <li>Advanced Quiz</li>
+                <li>No Ads</li>
+            </ul>
+
+            <button>
+                Get Premium
+            </button>
+        </div>
+    </section>
+
+    <!-- Profile -->
+    <section id="profile" class="page hidden">
+        <h1>Profile</h1>
+
+        <input
+            type="text"
+            placeholder="Full Name"
+        >
+
+        <input
+            type="email"
+            placeholder="Email"
+        >
+
+        <select>
+            <option>English</option>
+            <option>Hindi</option>
+            <option>Hinglish</option>
+        </select>
+
+        <button>
+            Save Changes
+        </button>
+    </section>
+
+    <script src="script.js"></script>
+
+</body>
+      </html>
