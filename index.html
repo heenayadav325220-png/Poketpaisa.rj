@@ -1,197 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Study Assistant</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlterX - AI Alter-Ego Sandbox</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,sans-serif;
+}
+
+body{
+background:#060b16;
+color:white;
+height:100vh;
+overflow:hidden;
+}
+
+.container{
+display:flex;
+height:100vh;
+}
+
+.sidebar{
+width:300px;
+background:#0b1220;
+border-right:1px solid rgba(255,255,255,.08);
+padding:20px;
+}
+
+.logo{
+font-size:28px;
+font-weight:700;
+margin-bottom:25px;
+color:#61dafb;
+}
+
+.card{
+background:#121b2d;
+padding:15px;
+border-radius:14px;
+margin-bottom:15px;
+}
+
+.status-live{
+color:#00ff7f;
+animation:pulse 1s infinite;
+}
+
+.status-idle{
+color:#ff9800;
+}
+
+@keyframes pulse{
+0%{opacity:.4;}
+50%{opacity:1;}
+100%{opacity:.4;}
+}
+
+.main{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.top{
+padding:20px;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+textarea{
+width:100%;
+height:120px;
+background:#101826;
+border:none;
+border-radius:12px;
+padding:15px;
+color:white;
+resize:none;
+font-size:15px;
+}
+
+.controls{
+margin-top:15px;
+display:flex;
+gap:12px;
+}
+
+button{
+border:none;
+cursor:pointer;
+padding:12px 18px;
+border-radius:10px;
+font-weight:700;
+}
+
+.start{
+background:#0ea5e9;
+color:white;
+}
+
+.kill{
+background:#ff5722;
+color:white;
+animation:pulse 1s infinite;
+}
+
+.api{
+background:#673ab7;
+color:white;
+}
+
+.chat{
+flex:1;
+overflow:auto;
+padding:20px;
+}
+
+.msg{
+max-width:80%;
+padding:14px;
+border-radius:14px;
+margin-bottom:16px;
+line-height:1.5;
+}
+
+.ai1{
+background:#16324f;
+}
+
+.ai2{
+background:#3b1d4d;
+margin-left:auto;
+}
+
+.name{
+font-size:13px;
+opacity:.7;
+margin-bottom:6px;
+}
+
+.modal{
+position:fixed;
+inset:0;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.65);
+backdrop-filter:blur(10px);
+}
+
+.modal-box{
+background:#111827;
+padding:25px;
+width:400px;
+border-radius:16px;
+}
+
+.modal input{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#1f2937;
+border:none;
+color:white;
+border-radius:10px;
+}
+
+.modal button{
+margin-top:15px;
+width:100%;
+}
+</style>
 </head>
+
 <body>
 
-    <!-- Navbar -->
-    <header>
-        <nav class="navbar">
-            <h2>AI Study Assistant</h2>
+<div class="container">
 
-            <div class="nav-links">
-                <button onclick="showPage('landing')">Home</button>
-                <button onclick="showPage('dashboard')">Dashboard</button>
-                <button onclick="showPage('chat')">Chat</button>
-                <button onclick="showPage('quiz')">Quiz</button>
-                <button onclick="showPage('notes')">Notes</button>
-                <button onclick="showPage('progress')">Progress</button>
-                <button onclick="showPage('pricing')">Pricing</button>
-                <button onclick="showPage('profile')">Profile</button>
-            </div>
-        </nav>
-    </header>
+<div class="sidebar">
 
-    <!-- Landing Page -->
-    <section id="landing" class="page">
-        <h1>Study Smarter With AI</h1>
-        <p>Chat, Quiz, Notes and Progress Tracking in one place.</p>
+<div class="logo">AlterX</div>
 
-        <button onclick="showPage('dashboard')">
-            Start Free
-        </button>
-    </section>
+<div class="card">
+<h3>Sandbox Status</h3>
+<p id="status" class="status-idle">● INACTIVE</p>
+</div>
 
-    <!-- Dashboard -->
-    <section id="dashboard" class="page hidden">
-        <h1>Dashboard</h1>
+<div class="card">
+<h3>API Status</h3>
+<p id="apiStatus">✕ NOT CONFIGURED</p>
+</div>
 
-        <div class="card-container">
+<div class="card">
+<h3>Active Speaker</h3>
+<p id="speaker">Waiting...</p>
+</div>
 
-            <div class="card">
-                <h3>📚 New Chat</h3>
-                <button onclick="showPage('chat')">Open</button>
-            </div>
+<div class="card">
+<h3>Safety Shield</h3>
+<p>Local Runtime Environment</p>
+</div>
 
-            <div class="card">
-                <h3>🧠 Quiz</h3>
-                <button onclick="showPage('quiz')">Open</button>
-            </div>
+</div>
 
-            <div class="card">
-                <h3>📝 Notes</h3>
-                <button onclick="showPage('notes')">Open</button>
-            </div>
+<div class="main">
 
-            <div class="card">
-                <h3>📊 Progress</h3>
-                <button onclick="showPage('progress')">Open</button>
-            </div>
+<div class="top">
 
-        </div>
-    </section>
+<textarea id="topic"
+placeholder="Enter app idea, coding challenge, science problem..."></textarea>
 
-    <!-- Chat -->
-    <section id="chat" class="page hidden">
-        <h1>AI Chat</h1>
+<div class="controls">
 
-        <select>
-            <option>Math</option>
-            <option>Science</option>
-            <option>English</option>
-            <option>History</option>
-        </select>
+<button id="startBtn" class="start">
+START LOOP
+</button>
 
-        <div id="chatBox">
-            <p>AI responses will appear here...</p>
-        </div>
+<button id="apiBtn" class="api">
+SET API KEY
+</button>
 
-        <input
-            type="text"
-            id="messageInput"
-            placeholder="Ask anything..."
-        >
+</div>
 
-        <button onclick="sendMessage()">
-            Send
-        </button>
-    </section>
+</div>
 
-    <!-- Quiz -->
-    <section id="quiz" class="page hidden">
-        <h1>Quiz</h1>
+<div class="chat" id="chat"></div>
 
-        <select>
-            <option>Math</option>
-            <option>Science</option>
-            <option>English</option>
-        </select>
+</div>
 
-        <button>
-            Start Quiz
-        </button>
+</div>
 
-        <div id="quizArea">
-            Quiz Questions Here
-        </div>
-    </section>
+<div class="modal" id="modal">
 
-    <!-- Notes -->
-    <section id="notes" class="page hidden">
-        <h1>My Notes</h1>
+<div class="modal-box">
 
-        <textarea
-            id="noteInput"
-            placeholder="Write note..."
-        ></textarea>
+<h2>Gemini API Key</h2>
 
-        <button onclick="saveNote()">
-            Save Note
-        </button>
+<input
+type="password"
+id="apiInput"
+placeholder="Paste API Key">
 
-        <div id="notesList"></div>
-    </section>
+<button class="api" id="saveApi">
+Save Key
+</button>
 
-    <!-- Progress -->
-    <section id="progress" class="page hidden">
-        <h1>Progress</h1>
+</div>
 
-        <div class="stats">
-            <p>Total Chats: <span id="totalChats">0</span></p>
-            <p>Total Notes: <span id="totalNotes">0</span></p>
-            <p>Quiz Score: <span id="quizScore">0</span></p>
-            <p>Daily Streak: <span id="streak">0</span></p>
-        </div>
-    </section>
+</div>
 
-    <!-- Pricing -->
-    <section id="pricing" class="page hidden">
-        <h1>Pricing</h1>
+<script>
 
-        <div class="plan">
-            <h2>Free</h2>
-            <ul>
-                <li>20 Messages / Day</li>
-                <li>5 Notes</li>
-                <li>Basic Quiz</li>
-            </ul>
-        </div>
+const chat=document.getElementById("chat");
+const startBtn=document.getElementById("startBtn");
+const topic=document.getElementById("topic");
+const status=document.getElementById("status");
+const speaker=document.getElementById("speaker");
 
-        <div class="plan premium">
-            <h2>Premium ₹99 / Month</h2>
-            <ul>
-                <li>Unlimited Messages</li>
-                <li>Unlimited Notes</li>
-                <li>Advanced Quiz</li>
-                <li>No Ads</li>
-            </ul>
+let running=false;
 
-            <button>
-                Get Premium
-            </button>
-        </div>
-    </section>
+function addMessage(name,text,type){
 
-    <!-- Profile -->
-    <section id="profile" class="page hidden">
-        <h1>Profile</h1>
+const div=document.createElement("div");
+div.className="msg "+type;
 
-        <input
-            type="text"
-            placeholder="Full Name"
-        >
+div.innerHTML=
+`
+<div class="name">${name}</div>
+<div>${text}</div>
+`;
 
-        <input
-            type="email"
-            placeholder="Email"
-        >
+chat.appendChild(div);
 
-        <select>
-            <option>English</option>
-            <option>Hindi</option>
-            <option>Hinglish</option>
-        </select>
+chat.scrollTop=chat.scrollHeight;
+}
 
-        <button>
-            Save Changes
-        </button>
-    </section>
+function sleep(ms){
+return new Promise(r=>setTimeout(r,ms));
+}
 
-    <script src="script.js"></script>
+async function loop(){
+
+const topicText=topic.value.trim();
+
+if(!topicText){
+alert("Enter topic");
+return;
+}
+
+running=true;
+
+topic.disabled=true;
+
+status.innerHTML="● LIVE";
+status.className="status-live";
+
+startBtn.innerText="KILL SWITCH";
+startBtn.className="kill";
+
+let round=1;
+
+while(running){
+
+speaker.innerText="AlterX-1";
+
+await sleep(1200);
+
+addMessage(
+"AlterX-1",
+`Round ${round}: Creative proposal for "${topicText}". 
+
+I propose a futuristic architecture using distributed AI agents, adaptive memory layers, autonomous planning and scalable cloud orchestration.`,
+"ai1"
+);
+
+if(!running) break;
+
+speaker.innerText="AlterX-2";
+
+await sleep(1500);
+
+addMessage(
+"AlterX-2",
+`Optimization Review:
+
+Potential bottlenecks detected:
+• Cost scaling
+• Latency
+• Memory overflow
+
+Recommendation:
+Use compressed context windows, edge inference and caching.`,
+"ai2"
+);
+
+round++;
+
+await sleep(1200);
+}
+
+speaker.innerText="Stopped";
+}
+
+function stopLoop(){
+
+running=false;
+
+topic.disabled=false;
+
+status.innerHTML="● INACTIVE";
+status.className="status-idle";
+
+startBtn.innerText="START LOOP";
+startBtn.className="start";
+}
+
+startBtn.addEventListener("click",()=>{
+
+if(!running){
+loop();
+}else{
+stopLoop();
+}
+
+});
+
+const modal=document.getElementById("modal");
+
+document.getElementById("apiBtn")
+.onclick=()=>{
+modal.style.display="flex";
+};
+
+document.getElementById("saveApi")
+.onclick=()=>{
+
+const key=
+document.getElementById("apiInput").value;
+
+localStorage.setItem(
+"alterx_api_key",
+key
+);
+
+document.getElementById("apiStatus")
+.innerHTML="✓ CONFIGURED";
+
+modal.style.display="none";
+};
+
+if(localStorage.getItem("alterx_api_key")){
+document.getElementById("apiStatus")
+.innerHTML="✓ CONFIGURED";
+}
+
+</script>
 
 </body>
-      </html>
+    </html>
