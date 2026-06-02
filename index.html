@@ -1,299 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Core AI - By Rohit</title>
-  <!-- Tailwind CSS For Beautiful UI -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Custom scrollbar for Chat History */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 10px; }
-    /* Animation for Atom Logo */
-    @keyframes spin-slow {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .animate-spin-slow { animation: spin-slow 10s linear infinite; }
-  </style>
-</head>
-<body class="bg-[#0f0f1a] text-white font-sans h-screen flex flex-col overflow-hidden">
-
-  <!-- ==================== 1. NAVIGATION BAR (TOP BAR) ==================== -->
-  <header class="bg-[#161626] p-4 flex items-center justify-between border-b border-gray-800 z-40">
-    <div class="flex items-center gap-3">
-      <!-- Slider Bar / Hamburger Menu Button -->
-      <button id="menuBtn" class="p-2 hover:bg-gray-800 rounded-lg text-2xl transition-all" title="Open Slider Box">
-        ☰
-      </button>
-      <div>
-        <h1 class="text-xl font-bold tracking-wider text-blue-400">Core AI</h1>
-        <p class="text-xs text-gray-400">By Rohit</p>
-      </div>
-    </div>
-    <!-- Top Right Corner Logo / User Profile -->
-    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center font-bold border border-gray-700 shadow-md">
-      R
-    </div>
-  </header>
-
-  <!-- ==================== 2. SLIDER BOX / SIDEBAR (FULL SCREEN LIST VIEW) ==================== -->
-  <div id="sliderBox" class="fixed inset-y-0 left-0 w-full sm:w-80 bg-[#161626] transform -translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col border-r border-gray-800 shadow-2xl">
-    <!-- Slider Header -->
-    <div class="p-4 flex items-center justify-between border-b border-gray-800">
-      <span class="font-bold text-lg text-gray-300">Core Navigation</span>
-      <button id="closeSliderBtn" class="text-2xl hover:text-red-400 px-2">&times;</button>
-    </div>
-    <!-- Slider Content / Actions -->
-    <div class="p-4 flex flex-col gap-2 border-b border-gray-800">
-      <button id="newChatBtn" class="w-full flex items-center gap-3 p-3 hover:bg-blue-600/20 hover:text-blue-400 rounded-xl border border-gray-700 text-left transition-all">
-        <span>➕</span> <b>New Chat</b>
-      </button>
-      <button id="settingsBtn" class="w-full flex items-center gap-3 p-3 hover:bg-gray-800 rounded-xl text-left transition-all">
-        <span>⚙️</span> <b>Settings</b>
-      </button>
-      <button id="deleteChatBtn" class="w-full flex items-center gap-3 p-3 hover:bg-red-600/20 hover:text-red-400 rounded-xl text-left transition-all">
-        <span>🗑️</span> <b>Delete Chat</b>
-      </button>
-    </div>
-    <!-- Chat History List -->
-    <div class="p-4 flex-1 flex flex-col min-h-0">
-      <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Chat History</h3>
-      <div id="chatHistoryContainer" class="flex-1 overflow-y-auto space-y-1">
-        <div class="p-2 hover:bg-gray-800 rounded-lg cursor-pointer text-sm text-gray-300 truncate">🏏 Cricket Match Analysis Strategy</div>
-        <div class="p-2 hover:bg-gray-800 rounded-lg cursor-pointer text-sm text-gray-300 truncate">🌌 Quantum Physics & Singularity</div>
-        <div class="p-2 hover:bg-gray-800 rounded-lg cursor-pointer text-sm text-gray-300 truncate">📚 Class 10 Study Planner</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== 3. MAIN CHAT AREA ==================== -->
-  <main class="flex-1 overflow-y-auto p-4 relative flex flex-col justify-between max-w-4xl w-full mx-auto">
-    
-    <!-- Empty For Chat Screen Layout (Core Atom Logo) -->
-    <div id="emptyScreen" class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-300">
-      <!-- Animated Atom Structure Custom Design -->
-      <div class="relative w-32 h-32 flex items-center justify-center">
-        <div class="absolute w-full h-full border-2 border-blue-500/30 rounded-full animate-spin-slow"></div>
-        <div class="absolute w-full h-full border-2 border-purple-500/30 rounded-full animate-spin-slow" style="transform: rotate(60deg);"></div>
-        <div class="absolute w-full h-full border-2 border-green-500/30 rounded-full animate-spin-slow" style="transform: rotate(120deg);"></div>
-        <!-- Center Core Nucleus -->
-        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg shadow-blue-500/50 flex items-center justify-center font-bold text-xs">AI</div>
-      </div>
-      <h2 class="text-2xl font-bold mt-6 tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">CORE AI</h2>
-      <p class="text-gray-500 text-sm mt-1">Ready to explore. Select your model and mode below.</p>
-    </div>
-
-    <!-- Active Chat Screen (Hidden by default until message sent) -->
-    <div id="chatBox" class="hidden w-full flex-col gap-4 pb-24">
-      <!-- Dynamic Messages will load here -->
-    </div>
-
-  </main>
-
-  <!-- ==================== 4. INPUT BOX SECTION (WITH ALL DROPDOWNS) ==================== -->
-  <div class="fixed bottom-5 left-0 right-0 max-w-2xl mx-auto px-4 z-40">
-    
-    <!-- Status Display for active Brain State -->
-    <div class="flex justify-between px-4 py-1 text-xs text-gray-400 bg-[#161626]/80 rounded-t-xl border-t border-x border-gray-800 w-max mx-auto gap-4">
-      <div>Brain: <span id="activeModelLabel" class="text-blue-400 font-semibold">Lama 3.3</span></div>
-      <div>Mode: <span id="activeModeLabel" class="text-green-400 font-semibold">Cricket</span></div>
-    </div>
-
-    <!-- Main Rounded Input Bar Box -->
-    <div class="bg-[#161626] text-white rounded-full flex items-center justify-between p-2 shadow-2xl border border-gray-800">
-      
-      <!-- i) (+) Add Button & Dropdown -->
-      <div class="relative">
-        <button id="addBtn" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-all text-xl font-bold" title="Add Info">
-          +
-        </button>
-        <!-- Photo, Files, Links List -->
-        <div id="addDropdown" class="hidden absolute bottom-14 left-0 bg-[#1c1c30] border border-gray-700 rounded-2xl p-2 w-36 shadow-2xl animate-fade-in">
-          <button class="w-full text-left p-2.5 hover:bg-gray-800 rounded-xl flex items-center gap-2 text-sm">🖼️ Photo</button>
-          <button class="w-full text-left p-2.5 hover:bg-gray-800 rounded-xl flex items-center gap-2 text-sm">📁 Files</button>
-          <button class="w-full text-left p-2.5 hover:bg-gray-800 rounded-xl flex items-center gap-2 text-sm">🔗 Links</button>
-        </div>
-      </div>
-
-      <!-- ii) (=) Change Models & App Modes Menu -->
-      <div class="relative ml-1">
-        <button id="modelBtn" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-all text-xl" title="Change Brain Model & Mode">
-          ☰
-        </button>
-        <!-- Table Popup for Models and Modes Selection -->
-        <div id="modelDropdown" class="hidden absolute bottom-14 left-0 bg-[#1c1c30] border border-gray-700 rounded-2xl p-4 w-80 shadow-2xl">
-          <table class="w-full text-left text-sm border-collapse">
-            <thead>
-              <tr class="border-b border-gray-700 text-gray-400 text-xs tracking-wider">
-                <th class="pb-2">BRAIN MODELS</th>
-                <th class="pb-2 pl-4">MODES</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="py-2.5 font-medium hover:text-blue-400 cursor-pointer transition-colors" onclick="setBrainModel('Lama 3.3')">🤖 Lama 3.3</td>
-                <td class="py-2.5 pl-4 font-medium hover:text-green-400 cursor-pointer transition-colors" onclick="setAppMode('Cricket')">🏏 Cricket</td>
-              </tr>
-              <tr>
-                <td class="py-2.5 font-medium hover:text-blue-400 cursor-pointer transition-colors" onclick="setBrainModel('Gemini 1.5 Flash')">✨ Gemini 1.5 Flash</td>
-                <td class="py-2.5 pl-4 font-medium hover:text-green-400 cursor-pointer transition-colors" onclick="setAppMode('Space')">🌌 Space</td>
-              </tr>
-              <tr>
-                <td class="py-2.5 font-medium hover:text-blue-400 cursor-pointer transition-colors" onclick="setBrainModel('ChatGPT mini')">⚡ ChatGpt mini</td>
-                <td class="py-2.5 pl-4 font-medium hover:text-green-400 cursor-pointer transition-colors" onclick="setAppMode('Study')">📚 Study</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- iii) Ask Core Input Field Box -->
-      <input type="text" id="userInput" placeholder="Ask Core..." class="w-full bg-transparent px-4 py-2 outline-none text-white placeholder-gray-500 text-base" autocomplete="off" />
-
-      <!-- iv) Mic Button (Listen & Translate Language) -->
-      <button id="micBtn" class="w-10 h-10 rounded-full hover:bg-gray-800 flex items-center justify-center transition-all mr-1 text-lg" title="Voice Input & Language Translator">
-        🎙️
-      </button>
-
-      <!-- v) Send Button (▶ Arrow Symbol) -->
-      <button id="sendBtn" class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-500 flex items-center justify-center transition-all text-white shadow-md shadow-blue-600/30" title="Send Message">
-        ▲
-      </button>
-
-    </div>
-  </div>
-
-  <!-- ==================== 5. SCRIPT.JS (BRAIN LOGIC ENGINE) ==================== -->
-  <script>
-    // System Variables
-    let currentModel = "Lama 3.3";
-    let currentMode = "Cricket";
-
-    // DOM Elements Selector
-    const menuBtn = document.getElementById('menuBtn');
-    const sliderBox = document.getElementById('sliderBox');
-    const closeSliderBtn = document.getElementById('closeSliderBtn');
-    const addBtn = document.getElementById('addBtn');
-    const addDropdown = document.getElementById('addDropdown');
-    const modelBtn = document.getElementById('modelBtn');
-    const modelDropdown = document.getElementById('modelDropdown');
-    const sendBtn = document.getElementById('sendBtn');
-    const userInput = document.getElementById('userInput');
-    const emptyScreen = document.getElementById('emptyScreen');
-    const chatBox = document.getElementById('chatBox');
-    const chatHistoryContainer = document.getElementById('chatHistoryContainer');
-    const newChatBtn = document.getElementById('newChatBtn');
-    const deleteChatBtn = document.getElementById('deleteChatBtn');
-    const micBtn = document.getElementById('micBtn');
-
-    // UI Toggles & Navigation Slider Engine
-    menuBtn.addEventListener('click', () => sliderBox.classList.remove('-translate-x-full'));
-    closeSliderBtn.addEventListener('click', () => sliderBox.classList.add('-translate-x-full'));
-    
-    addBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      addDropdown.classList.toggle('hidden');
-      modelDropdown.classList.add('hidden');
-    });
-
-    modelBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      modelDropdown.classList.toggle('hidden');
-      addDropdown.classList.add('hidden');
-    });
-
-    // Close dropdowns on clicking screen anywhere
-    document.addEventListener('click', () => {
-      addDropdown.classList.add('hidden');
-      modelDropdown.classList.add('hidden');
-    });
-
-    // Brain Configuration Set Functions
-    function setBrainModel(modelName) {
-      currentModel = modelName;
-      document.getElementById('activeModelLabel').innerText = modelName;
-    }
-
-    function setAppMode(modeName) {
-      currentMode = modeName;
-      document.getElementById('activeModeLabel').innerText = modeName;
-    }
-
-    // Action Features Logic
-    newChatBtn.addEventListener('click', () => {
-      chatBox.innerHTML = '';
-      chatBox.classList.add('hidden');
-      emptyScreen.classList.remove('hidden');
-      sliderBox.classList.add('-translate-x-full');
-    });
-
-    deleteChatBtn.addEventListener('click', () => {
-      if(confirm("Do you want to delete all chat logs?")) {
-        chatBox.innerHTML = '';
-        chatBox.classList.add('hidden');
-        emptyScreen.classList.remove('hidden');
-        sliderBox.classList.add('-translate-x-full');
-      }
-    });
-
-    micBtn.addEventListener('click', () => {
-      alert(`Mic activated inside [${currentMode} Mode]. System listening to user voice and converting/translating to prompt.`);
-    });
-
-    // Message Processing & Communication Logic
-    function handleSendMessage() {
-      const text = userInput.value.trim();
-      if (!text) return;
-
-      // Hide core logo first time text goes out
-      emptyScreen.classList.add('hidden');
-      chatBox.classList.remove('hidden');
-
-      // User Message Component Design
-      const userDiv = document.createElement('div');
-      userDiv.className = "flex justify-end w-full animate-fade-in";
-      userDiv.innerHTML = `
-        <div class="bg-blue-600/90 text-white rounded-2xl rounded-tr-none max-w-xl p-3 shadow-md text-sm">
-          ${text}
-        </div>
-      `;
-      chatBox.appendChild(userDiv);
-      userInput.value = '';
-
-      // Auto scroll logic to track active message frame
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      // Core Brain AI Response Logic Generator
-      setTimeout(() => {
-        let aiResponse = "";
-        
-        // Context-aware replies custom handling based on chosen app configuration states
-        if (currentMode === "Cricket") {
-          aiResponse = `[Core Core-Brain (${currentModel}) in 🏏 Cricket Mode]: Analyzing mechanics, bowling trajectory structure, and custom metrics for this query. System loaded processing for "${text}".`;
-        } else if (currentMode === "Space") {
-          aiResponse = `[Core Core-Brain (${currentModel}) in 🌌 Space Mode]: Tracking Astrophysics data modules, Supernova singularities event horizons state calculation ready. Fact output for "${text}".`;
-        } else {
-          aiResponse = `[Core Core-Brain (${currentModel}) in 📚 Study Mode]: Academic solution processing engine engaged. Extracting core concepts step-by-step documentation rules for: "${text}".`;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA AI - Prototype</title>
+    <style>
+        /* --- Global & Cyberpunk Theme Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        const aiDiv = document.createElement('div');
-        aiDiv.className = "flex justify-start w-full animate-fade-in";
-        aiDiv.innerHTML = `
-          <div class="bg-[#161626] border border-gray-800 text-gray-200 rounded-2xl rounded-tl-none max-w-xl p-3 shadow-md text-sm">
-            ${aiResponse}
-          </div>
-        `;
-        chatBox.appendChild(aiDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }, 800);
-    }
+        body {
+            background-color: #121214;
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+            /* स्क्रीन बॉर्डर नियॉन इफेक्ट */
+            border: 4px solid #00f3ff;
+            box-shadow: inset 0 0 20px #00f3ff, 0 0 20px #00f3ff;
+            animation: borderGlow 4s infinite alternate;
+        }
 
-    sendBtn.addEventListener('click', handleSendMessage);
-    userInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') handleSendMessage();
-    });
-  </script>
+        @keyframes borderGlow {
+            0% { border-color: #00f3ff; box-shadow: inset 0 0 15px #00f3ff, 0 0 15px #00f3ff; }
+            50% { border-color: #ff0055; box-shadow: inset 0 0 25px #ff0055, 0 0 25px #ff0055; }
+            100% { border-color: #00ff66; box-shadow: inset 0 0 15px #00ff66, 0 0 15px #00ff66; }
+        }
+
+        /* --- Screen Header & Display --- */
+        .app-title {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #00f3ff;
+            text-shadow: 0 0 10px #00f3ff;
+            margin-top: 10px;
+        }
+
+        .chat-display {
+            flex: 1;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 18px;
+            color: #8a8a93;
+        }
+
+        /* --- Core Component Layout --- */
+        .widget-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* --- Slide Up Features Menu --- */
+        .features-panel {
+            position: absolute;
+            bottom: 90px;
+            width: 100%;
+            background: rgba(20, 20, 25, 0.95);
+            border: 2px solid #00f3ff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 10;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-item:hover {
+            background: rgba(0, 243, 255, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-right: 20px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .feature-text {
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* --- Share Options Popover (+) --- */
+        .share-popover {
+            position: absolute;
+            bottom: 90px;
+            left: 0;
+            background: #1c1c24;
+            border: 2px solid #ff0055;
+            border-radius: 8px;
+            display: none;
+            flex-direction: column;
+            width: 120px;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+            z-index: 11;
+        }
+
+        .share-option {
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .share-option:last-child {
+            border-bottom: none;
+        }
+
+        .share-option:hover {
+            background: rgba(255, 0, 85, 0.2);
+            color: #ff0055;
+        }
+
+        /* --- Main Minimal Input Box --- */
+        .input-wrapper {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background: #1a1a1f;
+            border: 2px solid #00f3ff;
+            border-radius: 30px;
+            padding: 5px 15px;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: #00f3ff;
+            font-size: 20px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s, text-shadow 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 8px #00f3ff;
+        }
+
+        .text-input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 10px 15px;
+        }
+
+        .text-input::placeholder {
+            color: #5a5a66;
+        }
+
+        /* Toggle Button for Panel Setup */
+        .slide-trigger {
+            color: #ff0055;
+        }
+        .slide-trigger.active {
+            transform: rotate(180deg);
+            color: #00ff66;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-title">AURA / AI</div>
+
+    <div class="chat-display" id="displayBox">
+        [ ASK. AURA. EGO. ? ]
+    </div>
+
+    <div class="widget-container">
+        <div class="features-panel" id="featuresPanel">
+            <div class="feature-item" onclick="selectMode('Mood Mode', '😇')">
+                <span class="feature-icon">😊</span>
+                <span class="feature-text">Mood</span>
+            </div>
+            <div class="feature-item" onclick="selectMode('Live Face Video Calling', '📸')">
+                <span class="feature-icon">🧍‍♂️</span>
+                <span class="feature-text">Video Call</span>
+            </div>
+            <div class="feature-item" onclick="selectMode('AI Girlfriend / Boyfriend Mode', '❤️')">
+                <span class="feature-icon">🤍</span>
+                <span class="feature-text">Love</span>
+            </div>
+            <div class="feature-item" onclick="selectMode('Business Mode', '💼')">
+                <span class="feature-icon">📈</span>
+                <span class="feature-text">Business</span>
+            </div>
+            <div class="feature-item" onclick="selectMode('Friend Mode', '👥')">
+                <span class="feature-icon">🧑‍🤝‍🧑</span>
+                <span class="feature-text">Friend</span>
+            </div>
+            <div class="feature-item" onclick="selectMode('Assistant Mode', '🤖')">
+                <span class="feature-icon">☵</span>
+                <span class="feature-text">Assistant</span>
+            </div>
+        </div>
+
+        <div class="share-popover" id="sharePopover">
+            <div class="share-option" onclick="triggerShare('Files')">Files</div>
+            <div class="share-option" onclick="triggerShare('Photos')">Photos</div>
+            <div class="share-option" onclick="triggerShare('Videos')">Videos</div>
+        </div>
+
+        <div class="input-wrapper">
+            <button class="action-btn" id="plusBtn">⊞</button>
+            
+            <input type="text" class="text-input" id="mainInput" placeholder="ASK. AURA. EGO.?">
+            
+            <button class="action-btn slide-trigger" id="slideBtn">▲</button>
+            
+            <button class="action-btn" id="sendBtn">⌃</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const plusBtn = document.getElementById('plusBtn');
+        const slideBtn = document.getElementById('slideBtn');
+        const sendBtn = document.getElementById('sendBtn');
+        const sharePopover = document.getElementById('sharePopover');
+        const featuresPanel = document.getElementById('featuresPanel');
+        const displayBox = document.getElementById('displayBox');
+        const mainInput = document.getElementById('mainInput');
+
+        // Toggle Share Menu (+)
+        plusBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            featuresPanel.style.display = 'none';
+            slideBtn.classList.remove('active');
+            sharePopover.style.display = sharePopover.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Toggle Slide Up Menu (▲)
+        slideBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sharePopover.style.display = 'none';
+            if (featuresPanel.style.display === 'flex') {
+                featuresPanel.style.display = 'none';
+                slideBtn.classList.remove('active');
+            } else {
+                featuresPanel.style.display = 'flex';
+                slideBtn.classList.add('active');
+            }
+        });
+
+        // Close panels when clicking outside
+        document.addEventListener('click', () => {
+            sharePopover.style.display = 'none';
+            featuresPanel.style.display = 'none';
+            slideBtn.classList.remove('active');
+        });
+
+        // Functionality for features selection
+        function selectMode(modeName, icon) {
+            displayBox.style.color = '#00f3ff';
+            displayBox.innerHTML = `<span style="font-size: 40px;">${icon}</span><br><br>System initialized to: <strong style="text-transform: uppercase; color: #ff0055;">${modeName}</strong>`;
+            mainInput.placeholder = `Talking in ${modeName}...`;
+        }
+
+        // Functionality for share assets
+        function triggerShare(type) {
+            displayBox.style.color = '#ff0055';
+            displayBox.innerHTML = `Opening Device Storage...<br>Selected Asset Type: <strong>${type}</strong>`;
+        }
+
+        // Action for sending text message
+        sendBtn.addEventListener('click', () => {
+            const query = mainInput.value.trim();
+            if(query !== "") {
+                displayBox.style.color = '#00ff66';
+                displayBox.innerHTML = `User Asked: "${query}"<br><br><span style="color: #8a8a93;">AURA UI Processing request...</span>`;
+                mainInput.value = "";
+            }
+        });
+
+        // Enter key shortcut trigger
+        mainInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+    </script>
 </body>
 </html>
