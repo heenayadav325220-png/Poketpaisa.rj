@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CorBat AI</title>
+<title>Battle Royale 2035</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -14,190 +15,251 @@ font-family:Arial, sans-serif;
 }
 
 body{
-background:#121212;
-color:#fff;
+background:#050816;
+color:white;
 height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-padding:20px;
+overflow:hidden;
 }
 
-.top-bar{
+.bg{
+position:fixed;
+width:100%;
+height:100%;
+background:
+linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.7)),
+url('https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=2000');
+background-size:cover;
+background-position:center;
+z-index:-1;
+}
+
+.topbar{
+height:70px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+padding:0 20px;
+background:rgba(0,0,0,.4);
+backdrop-filter:blur(10px);
+border-bottom:1px solid #00e5ff44;
 }
 
 .logo{
 font-size:28px;
-font-weight:800;
-color:#39FF14;
-}
-
-.connection{
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.dot{
-width:14px;
-height:14px;
-border-radius:50%;
-background:#ff3333;
-box-shadow:0 0 12px #ff3333;
-}
-
-.dashboard{
-flex:1;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-}
-
-.speedometer{
-width:250px;
-height:250px;
-border-radius:50%;
-border:8px solid #39FF14;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-box-shadow:0 0 25px #39FF14;
-}
-
-.speed{
-font-size:72px;
-font-weight:900;
-}
-
-.unit{
-font-size:22px;
-opacity:0.8;
-}
-
-.badge{
-margin-top:25px;
-padding:12px 25px;
-border-radius:30px;
 font-weight:bold;
-background:#1f1f1f;
-border:1px solid #39FF14;
+color:#8a5cff;
 }
 
-.bottom-bar{
+.currency{
 display:flex;
-flex-direction:column;
 gap:15px;
 }
 
-.btn{
-height:58px;
-border:none;
-border-radius:14px;
-font-size:18px;
-font-weight:bold;
+.currency div{
+padding:8px 15px;
+border:1px solid #00e5ff55;
+border-radius:10px;
+}
+
+.main{
+display:flex;
+height:calc(100vh - 70px);
+}
+
+.sidebar{
+width:240px;
+padding:20px;
+background:rgba(0,0,0,.35);
+backdrop-filter:blur(8px);
+border-right:1px solid #00e5ff22;
+}
+
+.menu{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.menu button{
+height:55px;
+background:#0b1229;
+color:white;
+border:1px solid #00e5ff33;
+border-radius:12px;
 cursor:pointer;
 }
 
-.download{
-background:#39FF14;
-color:#000;
+.menu button:hover{
+background:#152248;
 }
 
-.share{
-background:#1565C0;
+.center{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
+
+.character{
+width:250px;
+height:450px;
+background:linear-gradient(180deg,#8a5cff,#00e5ff);
+border-radius:30px;
+box-shadow:0 0 40px #8a5cff;
+}
+
+.player{
+margin-top:20px;
+font-size:30px;
+font-weight:bold;
+}
+
+.right{
+width:320px;
+padding:20px;
+}
+
+.card{
+background:rgba(15,20,40,.8);
+border:1px solid #8a5cff55;
+border-radius:20px;
+padding:20px;
+margin-bottom:15px;
+}
+
+.start{
+height:90px;
+font-size:36px;
+font-weight:bold;
+width:100%;
+border:none;
+border-radius:20px;
+cursor:pointer;
+background:linear-gradient(90deg,#00e5ff,#8a5cff);
 color:white;
+box-shadow:0 0 25px #00e5ff;
 }
 
-.btn:hover{
-transform:scale(1.02);
+.start:hover{
+transform:scale(1.03);
 }
+
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.9);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+font-size:30px;
+}
+
+.loader{
+width:80px;
+height:80px;
+border:8px solid #333;
+border-top:8px solid #00e5ff;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:20px;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
 </style>
 </head>
+
 <body>
 
-<div class="top-bar">
-<div class="logo">CorBat AI</div>
+<div class="bg"></div>
 
-<div class="connection">
-<div class="dot" id="statusDot"></div>
-<span id="statusText">Searching...</span>
+<div class="topbar">
+<div class="logo">BATTLE 2035</div>
+
+<div class="currency">
+<div>💰 99,999</div>
+<div>⚡ 99,999</div>
 </div>
 </div>
 
-<div class="dashboard">
+<div class="main">
 
-<div class="speedometer">
-<div class="speed" id="speed">0</div>
-<div class="unit">km/h</div>
+<div class="sidebar">
+
+<div class="menu">
+<button>MISSIONS</button>
+<button>BATTLE PASS</button>
+<button>EVENTS</button>
+<button>STORE</button>
+<button>CLAN</button>
+<button>INVENTORY</button>
+<button onclick="armory()">ARMORY</button>
 </div>
 
-<div class="badge" id="quality">
-READY TO HIT
+</div>
+
+<div class="center">
+
+<div class="character"></div>
+
+<div class="player">
+WARRIOR_2035
 </div>
 
 </div>
 
-<div class="bottom-bar">
-<button class="btn download" id="installBtn">
-DOWNLOAD CORBAT APP
+<div class="right">
+
+<div class="card">
+<h2>Operation Neo Dusk</h2>
+<p>Limited Time Event</p>
+</div>
+
+<div class="card">
+<h2>Weapon</h2>
+<p>Quantum Drake M416 Lv.7</p>
+</div>
+
+<button class="start" onclick="startMatch()">
+START
 </button>
 
-<button class="btn share" onclick="shareApp()">
-SHARE WITH FRIENDS
-</button>
+</div>
+
+</div>
+
+<div class="popup" id="popup">
+
+<div class="loader"></div>
+
+<div>MATCHMAKING...</div>
+
 </div>
 
 <script>
 
-// Demo Live Speed Simulation
-setInterval(()=>{
-let speed=Math.floor(Math.random()*160);
+function startMatch(){
 
-document.getElementById("speed").innerText=speed;
+document.getElementById("popup").style.display="flex";
 
-if(speed>110){
-document.getElementById("quality").innerText="PERFECT TIMING";
-document.getElementById("quality").style.color="#39FF14";
-}else{
-document.getElementById("quality").innerText="READY TO HIT";
-document.getElementById("quality").style.color="#FFFFFF";
-}
-},1500);
+setTimeout(()=>{
+alert("Prototype Match Started");
+document.getElementById("popup").style.display="none";
+},3000);
 
-// WhatsApp Share
-function shareApp(){
-let link=window.location.href;
-
-window.open(
-`https://wa.me/?text=Track your bat speed with CorBat AI 🚀 ${link}`,
-'_blank'
-);
 }
 
-// BLE Placeholder
-async function connectBluetooth(){
-try{
-const device = await navigator.bluetooth.requestDevice({
-acceptAllDevices:true
-});
+function armory(){
 
-document.getElementById("statusDot").style.background="#39FF14";
-document.getElementById("statusDot").style.boxShadow="0 0 15px #39FF14";
-document.getElementById("statusText").innerText="Connected";
+alert("Opening Futuristic Armory");
 
-}catch(err){
-console.log(err);
 }
-}
-
-// Auto connect on tap
-document.getElementById("statusDot")
-.addEventListener("click",connectBluetooth);
 
 </script>
 
