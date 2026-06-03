@@ -3,330 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA AI - Prototype</title>
-    <style>
-        /* --- Global & Cyberpunk Theme Styles --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #121214;
-            color: #ffffff;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            overflow: hidden;
-            padding: 20px;
-            /* स्क्रीन बॉर्डर नियॉन इफेक्ट */
-            border: 4px solid #00f3ff;
-            box-shadow: inset 0 0 20px #00f3ff, 0 0 20px #00f3ff;
-            animation: borderGlow 4s infinite alternate;
-        }
-
-        @keyframes borderGlow {
-            0% { border-color: #00f3ff; box-shadow: inset 0 0 15px #00f3ff, 0 0 15px #00f3ff; }
-            50% { border-color: #ff0055; box-shadow: inset 0 0 25px #ff0055, 0 0 25px #ff0055; }
-            100% { border-color: #00ff66; box-shadow: inset 0 0 15px #00ff66, 0 0 15px #00ff66; }
-        }
-
-        /* --- Screen Header & Display --- */
-        .app-title {
-            font-size: 24px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            color: #00f3ff;
-            text-shadow: 0 0 10px #00f3ff;
-            margin-top: 10px;
-        }
-
-        .chat-display {
-            flex: 1;
-            width: 100%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-size: 18px;
-            color: #8a8a93;
-        }
-
-        /* --- Core Component Layout --- */
-        .widget-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        /* --- Slide Up Features Menu --- */
-        .features-panel {
-            position: absolute;
-            bottom: 90px;
-            width: 100%;
-            background: rgba(20, 20, 25, 0.95);
-            border: 2px solid #00f3ff;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 10;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .feature-item:last-child {
-            border-bottom: none;
-        }
-
-        .feature-item:hover {
-            background: rgba(0, 243, 255, 0.15);
-        }
-
-        .feature-icon {
-            font-size: 24px;
-            margin-right: 20px;
-            width: 30px;
-            text-align: center;
-        }
-
-        .feature-text {
-            font-size: 16px;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        /* --- Share Options Popover (+) --- */
-        .share-popover {
-            position: absolute;
-            bottom: 90px;
-            left: 0;
-            background: #1c1c24;
-            border: 2px solid #ff0055;
-            border-radius: 8px;
-            display: none;
-            flex-direction: column;
-            width: 120px;
-            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
-            z-index: 11;
-        }
-
-        .share-option {
-            padding: 12px;
-            text-align: center;
-            font-size: 14px;
-            cursor: pointer;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .share-option:last-child {
-            border-bottom: none;
-        }
-
-        .share-option:hover {
-            background: rgba(255, 0, 85, 0.2);
-            color: #ff0055;
-        }
-
-        /* --- Main Minimal Input Box --- */
-        .input-wrapper {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            background: #1a1a1f;
-            border: 2px solid #00f3ff;
-            border-radius: 30px;
-            padding: 5px 15px;
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            color: #00f3ff;
-            font-size: 20px;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.2s, text-shadow 0.2s;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.1);
-            text-shadow: 0 0 8px #00f3ff;
-        }
-
-        .text-input {
-            flex: 1;
-            background: none;
-            border: none;
-            outline: none;
-            color: #ffffff;
-            font-size: 16px;
-            padding: 10px 15px;
-        }
-
-        .text-input::placeholder {
-            color: #5a5a66;
-        }
-
-        /* Toggle Button for Panel Setup */
-        .slide-trigger {
-            color: #ff0055;
-        }
-        .slide-trigger.active {
-            transform: rotate(180deg);
-            color: #00ff66;
-        }
-    </style>
+    <title>CorBat AI</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="app-title">AURA / AI</div>
-
-    <div class="chat-display" id="displayBox">
-        [ ASK. AURA. EGO. ? ]
+    <!-- टॉप बार (Control Panel) -->
+    <div class="top-bar">
+        <h1 class="logo">CorBat <span>AI</span></h1>
+        <div id="bt-status" class="bt-dot disconnected"></div>
     </div>
 
-    <div class="widget-container">
-        <div class="features-panel" id="featuresPanel">
-            <div class="feature-item" onclick="selectMode('Mood Mode', '😇')">
-                <span class="feature-icon">😊</span>
-                <span class="feature-text">Mood</span>
-            </div>
-            <div class="feature-item" onclick="selectMode('Live Face Video Calling', '📸')">
-                <span class="feature-icon">🧍‍♂️</span>
-                <span class="feature-text">Video Call</span>
-            </div>
-            <div class="feature-item" onclick="selectMode('AI Girlfriend / Boyfriend Mode', '❤️')">
-                <span class="feature-icon">🤍</span>
-                <span class="feature-text">Love</span>
-            </div>
-            <div class="feature-item" onclick="selectMode('Business Mode', '💼')">
-                <span class="feature-icon">📈</span>
-                <span class="feature-text">Business</span>
-            </div>
-            <div class="feature-item" onclick="selectMode('Friend Mode', '👥')">
-                <span class="feature-icon">🧑‍🤝‍🧑</span>
-                <span class="feature-text">Friend</span>
-            </div>
-            <div class="feature-item" onclick="selectMode('Assistant Mode', '🤖')">
-                <span class="feature-icon">☵</span>
-                <span class="feature-text">Assistant</span>
-            </div>
+    <!-- मिडिल सेक्शन (Dashboard) -->
+    <div class="dashboard">
+        <div class="speed-container">
+            <div class="speed-value" id="speed-display">00</div>
+            <div class="speed-unit">km/h</div>
         </div>
-
-        <div class="share-popover" id="sharePopover">
-            <div class="share-option" onclick="triggerShare('Files')">Files</div>
-            <div class="share-option" onclick="triggerShare('Photos')">Photos</div>
-            <div class="share-option" onclick="triggerShare('Videos')">Videos</div>
-        </div>
-
-        <div class="input-wrapper">
-            <button class="action-btn" id="plusBtn">⊞</button>
-            
-            <input type="text" class="text-input" id="mainInput" placeholder="ASK. AURA. EGO.?">
-            
-            <button class="action-btn slide-trigger" id="slideBtn">▲</button>
-            
-            <button class="action-btn" id="sendBtn">⌃</button>
-        </div>
+        
+        <div class="shot-status" id="shot-quality">READY TO HIT</div>
     </div>
 
-    <script>
-        // DOM Elements
-        const plusBtn = document.getElementById('plusBtn');
-        const slideBtn = document.getElementById('slideBtn');
-        const sendBtn = document.getElementById('sendBtn');
-        const sharePopover = document.getElementById('sharePopover');
-        const featuresPanel = document.getElementById('featuresPanel');
-        const displayBox = document.getElementById('displayBox');
-        const mainInput = document.getElementById('mainInput');
+    <!-- बॉटम सेक्शन (Action Buttons) -->
+    <div class="action-area">
+        <!-- जादुई फ्री डाउनलोड बटन -->
+        <button id="download-btn" class="btn btn-download">
+            📥 DOWNLOAD CorBat APP (FREE)
+        </button>
+        
+        <!-- व्हाट्सएप शेयर बटन -->
+        <button id="share-btn" class="btn btn-share">
+            🔗 SHARE WITH FRIENDS
+        </button>
+    </div>
 
-        // Toggle Share Menu (+)
-        plusBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            featuresPanel.style.display = 'none';
-            slideBtn.classList.remove('active');
-            sharePopover.style.display = sharePopover.style.display === 'flex' ? 'none' : 'flex';
-        });
-
-        // Toggle Slide Up Menu (▲)
-        slideBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            sharePopover.style.display = 'none';
-            if (featuresPanel.style.display === 'flex') {
-                featuresPanel.style.display = 'none';
-                slideBtn.classList.remove('active');
-            } else {
-                featuresPanel.style.display = 'flex';
-                slideBtn.classList.add('active');
-            }
-        });
-
-        // Close panels when clicking outside
-        document.addEventListener('click', () => {
-            sharePopover.style.display = 'none';
-            featuresPanel.style.display = 'none';
-            slideBtn.classList.remove('active');
-        });
-
-        // Functionality for features selection
-        function selectMode(modeName, icon) {
-            displayBox.style.color = '#00f3ff';
-            displayBox.innerHTML = `<span style="font-size: 40px;">${icon}</span><br><br>System initialized to: <strong style="text-transform: uppercase; color: #ff0055;">${modeName}</strong>`;
-            mainInput.placeholder = `Talking in ${modeName}...`;
-        }
-
-        // Functionality for share assets
-        function triggerShare(type) {
-            displayBox.style.color = '#ff0055';
-            displayBox.innerHTML = `Opening Device Storage...<br>Selected Asset Type: <strong>${type}</strong>`;
-        }
-
-        // Action for sending text message
-        sendBtn.addEventListener('click', () => {
-            const query = mainInput.value.trim();
-            if(query !== "") {
-                displayBox.style.color = '#00ff66';
-                displayBox.innerHTML = `User Asked: "${query}"<br><br><span style="color: #8a8a93;">AURA UI Processing request...</span>`;
-                mainInput.value = "";
-            }
-        });
-
-        // Enter key shortcut trigger
-        mainInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendBtn.click();
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
