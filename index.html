@@ -1,342 +1,251 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="classic">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tesla 2030 Concept</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
-}
-
-body{
-background:#050816;
-color:#fff;
-overflow:hidden;
-}
-
-.screen{
-position:absolute;
-width:100%;
-height:100vh;
-padding:20px;
-display:none;
-overflow:auto;
-}
-
-.active{
-display:block;
-}
-
-.glass{
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(20px);
-border:1px solid rgba(255,255,255,.1);
-border-radius:25px;
-padding:20px;
-margin-bottom:20px;
-}
-
-.logo{
-font-size:32px;
-font-weight:bold;
-letter-spacing:8px;
-color:#00e5ff;
-margin-bottom:20px;
-}
-
-.car{
-width:100%;
-height:220px;
-border-radius:20px;
-background:linear-gradient(90deg,#00e5ff,#00ff88);
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:28px;
-font-weight:bold;
-color:#000;
-}
-
-.stat{
-display:flex;
-justify-content:space-between;
-margin-top:10px;
-}
-
-.big{
-font-size:42px;
-font-weight:bold;
-color:#00ff88;
-}
-
-.bar{
-height:12px;
-background:#111;
-border-radius:20px;
-overflow:hidden;
-margin-top:15px;
-}
-
-.fill{
-height:100%;
-width:89%;
-background:linear-gradient(90deg,#00ff88,#00e5ff);
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-}
-
-.card{
-background:rgba(255,255,255,.04);
-padding:20px;
-border-radius:20px;
-text-align:center;
-}
-
-.card h2{
-color:#00e5ff;
-}
-
-.nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-height:70px;
-background:#08111f;
-display:flex;
-justify-content:space-around;
-align-items:center;
-border-top:1px solid rgba(255,255,255,.1);
-}
-
-.nav button{
-background:none;
-border:none;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
-
-.speed{
-font-size:90px;
-text-align:center;
-color:#00e5ff;
-text-shadow:0 0 30px #00e5ff;
-}
-
-.lane{
-height:320px;
-position:relative;
-overflow:hidden;
-border-radius:20px;
-background:#000;
-}
-
-.lane::before{
-content:'';
-position:absolute;
-left:50%;
-width:6px;
-height:100%;
-background:linear-gradient(transparent,#fff,transparent);
-animation:road 1s linear infinite;
-}
-
-@keyframes road{
-from{transform:translateY(-100%);}
-to{transform:translateY(100%);}
-}
-
-.ai{
-position:absolute;
-bottom:40px;
-left:50%;
-transform:translateX(-50%);
-width:90px;
-height:150px;
-background:#00e5ff;
-border-radius:20px;
-box-shadow:0 0 30px #00e5ff;
-}
-
-.chart{
-height:220px;
-display:flex;
-align-items:flex-end;
-gap:10px;
-}
-
-.col{
-flex:1;
-background:linear-gradient(#00e5ff,#00ff88);
-border-radius:10px 10px 0 0;
-animation:pulse 2s infinite alternate;
-}
-
-@keyframes pulse{
-from{opacity:.4}
-to{opacity:1}
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORBAT - Smart Cricket Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-<!-- DASHBOARD -->
+    <!-- TOP NAVBAR -->
+    <header class="top-navbar">
+        <button id="menuBtn" class="nav-icon-btn"><i class="fa-solid fa-bars"></i></button>
+        <div class="logo-container">
+            <!-- Real Logo Design inside App -->
+            <div class="app-mini-logo">
+                <i class="fa-solid fa-baseball-bat-ball"></i>
+                <div class="chip-dot"></div>
+            </div>
+            <h1 class="app-logo">CORBAT</h1>
+        </div>
+        <button id="profileBtn" class="nav-icon-btn" onclick="toggleProfile()"><i class="fa-solid fa-user-circle"></i></button>
+    </header>
 
-<div class="screen active" id="home">
+    <!-- USER PROFILE SECTION (Login/Details Mock) -->
+    <div id="profileDropdown" class="profile-card">
+        <h3><i class="fa-solid fa-id-card"></i> User Profile</h3>
+        <p><strong>Name:</strong> Rohit Yadav</p>
+        <p><strong>Role:</strong> Batter / App Owner</p>
+        <button class="logout-btn" onclick="toggleProfile()">Close</button>
+    </div>
 
-<div class="logo">TESLA</div>
+    <!-- SIDE NAVIGATION BAR (Full Screen Overlay) -->
+    <div id="sideNav" class="sidebar">
+        <div class="sidebar-header">
+            <span><i class="fa-solid fa-gear"></i> Settings & Themes</span>
+            <button id="closeBtn" class="close-btn">&times;</button>
+        </div>
+        <div class="sidebar-content">
+            <!-- Theme Selector -->
+            <div class="theme-selector-box">
+                <h4><i class="fa-solid fa-palette"></i> Select Theme</h4>
+                <div class="theme-buttons">
+                    <button class="theme-btn active" onclick="changeTheme('classic')">Classic</button>
+                    <button class="theme-btn neon-btn" onclick="changeTheme('neon')">Neon Border</button>
+                    <button class="theme-btn cyberpunk-btn" onclick="changeTheme('cyberpunk')">Cyberpunk</button>
+                </div>
+            </div>
 
-<div class="glass">
+            <ul class="nav-links">
+                <li><a href="#" onclick="showSection('home')"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="#" onclick="showSection('coreai')"><i class="fa-solid fa-microchip"></i> Ask Core AI</a></li>
+                <li><a href="#" onclick="showSection('leaderboard')"><i class="fa-solid fa-trophy"></i> Leaderboard</a></li>
+                <li><a href="#" onclick="showSection('analysis')"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
+            </ul>
+            
+            <div class="sidebar-batches">
+                <h3>Batches & Records</h3>
+                <div class="batch-item">
+                    <i class="fa-solid fa-bolt speed-icon"></i>
+                    <span>Fastest Speed: <strong id="sidebar-fastest">145 km/h</strong></span>
+                </div>
+                <div class="batch-item">
+                    <i class="fa-solid fa-globe rank-icon"></i>
+                    <span>World Rank: <strong>#10</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="car">
-MODEL X 2030
-</div>
+    <!-- MAIN APP CONTAINER -->
+    <main class="app-container">
 
-<div class="stat">
-<h3>Battery</h3>
-<h3>89%</h3>
-</div>
+        <!-- 1. HOME SCREEN SECTION -->
+        <section id="homeSection" class="app-section active">
+            <div class="grid-buttons">
+                <button class="grid-btn" onclick="showSection('leaderboard')">
+                    <i class="fa-solid fa-crown"></i> Leader Board
+                </button>
+                <button class="grid-btn" onclick="showSection('analysis')">
+                    <i class="fa-solid fa-chart-pie"></i> ANALYSIS
+                </button>
+            </div>
 
-<div class="bar">
-<div class="fill"></div>
-</div>
+            <div class="list-buttons">
+                <button class="list-btn premium-btn" onclick="alert('Premium Feature: Filhal iski Jarurat nahi hai.')">
+                    <i class="fa-solid fa-star"></i> Premium Subscription
+                </button>
+                <button class="list-btn product-btn" onclick="alert('Product Store: Abhi jarurat nahi hai.')">
+                    <i class="fa-solid fa-box-open"></i> Our Products
+                </button>
+            </div>
 
-<div class="stat" style="margin-top:15px;">
-<div>
-<p>Range</p>
-<div class="big">520km</div>
-</div>
+            <div class="interactive-grid">
+                <div class="ask-ai-box" onclick="showSection('coreai')">
+                    <h3>ASK Core AI</h3>
+                    <p>Personal Assistant & Coach (Powered by Gemini 1.5 Flash)</p>
+                    <button class="ai-btn">Open Coach</button>
+                </div>
+                <div class="connect-device-box" onclick="showSection('connect')">
+                    <h3>Connect Device</h3>
+                    <div class="smart-bat-graphic">
+                        <i class="fa-solid fa-baseball-bat-ball bat-icon"></i>
+                        <span class="badge" id="connection-status">DISCONNECTED</span>
+                    </div>
+                    <button class="connect-btn">Manage Grip Chip</button>
+                </div>
+            </div>
 
-<div>
-<p>Status</p>
-<div class="big">READY</div>
-</div>
-</div>
+            <!-- Interactive Tracking Display / Dynamic User Image Area -->
+            <div class="bottom-graphic">
+                <div class="stickman-container">
+                    <div id="live-graphic" class="live-action-avatar">🏏</div>
+                    <p id="live-status-text">Ready for Batting Session</p>
+                    <button class="change-graphic-btn" onclick="changeLiveGraphic()">Change Display</button>
+                </div>
+            </div>
+        </section>
 
-</div>
+        <!-- 2. ASK CORE AI SECTION -->
+        <section id="coreaiSection" class="app-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-robot"></i> Core AI Coach</h2>
+                <button class="back-btn" onclick="showSection('home')">Back</button>
+            </div>
+            
+            <div class="ai-chat-container">
+                <div class="ai-branding">
+                    <!-- Atom / Core AI Symbol -->
+                    <div class="atom-symbol" id="ai-atom">
+                        <div class="ring"></div>
+                        <div class="ring"></div>
+                        <div class="ring"></div>
+                        <div class="core-dot"></div>
+                    </div>
+                    <h3>Core AI Live</h3>
+                </div>
 
-<div class="grid">
+                <div class="chat-output" id="chatOutput">
+                    <div class="msg ai-msg">Hi Rohit, main Core AI hoon, aapka personal cricket coach. Apni batting aur Grip Chip ka data analyze karne ke liye mujhse kuch bhi poohein!</div>
+                </div>
 
-<div class="card">
-<h2>22°C</h2>
-<p>Climate</p>
-</div>
+                <div class="chat-input-area">
+                    <button class="input-addon-btn"><i class="fa-solid fa-bars"></i></button>
+                    <input type="text" id="userInput" placeholder="ASK Core AI..." onkeypress="handleKeyPress(event)">
+                    <button class="send-btn" onclick="sendMessageToAI()"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
 
-<div class="card">
-<h2>ON</h2>
-<p>Security</p>
-</div>
+        <!-- 3. CONNECT DEVICE SECTION -->
+        <section id="connectSection" class="app-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-link"></i> Connect Grip Chip</h2>
+                <button class="back-btn" onclick="showSection('home')">Back</button>
+            </div>
 
-<div class="card">
-<h2>AI</h2>
-<p>Autopilot</p>
-</div>
+            <div class="connection-methods">
+                <div class="method-card" onclick="startConnection('Scanner')">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <h3>Scan QR Code</h3>
+                    <p>Scan the code printed on the grip chip</p>
+                </div>
 
-<div class="card">
-<h2>GPS</h2>
-<p>Navigation</p>
-</div>
+                <div class="method-card" onclick="startConnection('Bluetooth')">
+                    <i class="fa-solid fa-bluetooth"></i>
+                    <h3>Bluetooth Pairing</h3>
+                    <p>Search for nearby smart grip hardware</p>
+                </div>
 
-</div>
+                <div class="method-card" onclick="promptCodeConnection()">
+                    <i class="fa-solid fa-keyboard"></i>
+                    <h3>Enter Secret Code</h3>
+                    <p>Type the chip identity code manually</p>
+                </div>
+            </div>
 
-</div>
+            <div id="connection-progress-box" class="progress-log-box" style="display: none;">
+                <h4 id="progress-title">Connecting...</h4>
+                <div class="spinner"></div>
+                <p id="progress-details">Searching for device frequencies...</p>
+            </div>
+        </section>
 
-<!-- AUTOPILOT -->
+        <!-- 4. LEADERBOARD SECTION -->
+        <section id="leaderboardSection" class="app-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-trophy"></i> Top 10 Leaderboard</h2>
+                <button class="back-btn" onclick="showSection('home')">Back</button>
+            </div>
 
-<div class="screen" id="auto">
+            <div class="country-selector">
+                <label for="countrySelect">Select Country Region: </label>
+                <select id="countrySelect" onchange="updateLeaderboard()">
+                    <option value="global">Global</option>
+                    <option value="india">India</option>
+                    <option value="america">America</option>
+                    <option value="australia">Australia</option>
+                    <option value="pakistan">Pakistan</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
 
-<div class="logo">AUTOPILOT</div>
+            <div class="leaderboard-list" id="leaderboardData">
+                <!-- Data Real-Time inject values from JS -->
+            </div>
+        </section>
 
-<div class="glass">
+        <!-- 5. ANALYSIS SECTION -->
+        <section id="analysisSection" class="app-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-chart-line"></i> Performance Analysis</h2>
+                <button class="back-btn" onclick="showSection('home')">Back</button>
+            </div>
 
-<div class="speed">87</div>
+            <div class="analysis-card main-progress">
+                <h3>Overall Batting Progress</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="mainProgress" style="width: 75%;">75%</div>
+                </div>
+            </div>
 
-<center>KM/H</center>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-label">Lowest Bat Speed</span>
+                    <span class="stat-value low" id="stat-lowest">32 km/h</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Highest Bat Speed</span>
+                    <span class="stat-value high" id="stat-highest">145 km/h</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Shot Direction Accuracy</span>
+                    <span class="stat-value" style="color: #2979ff;">84%</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Sensor Chip Status</span>
+                    <span class="stat-value" id="stat-sensor-status" style="color: #ff5252;">OFFLINE</span>
+                </div>
+            </div>
 
-<br>
+            <button class="simulate-shot-btn" onclick="simulateGripData()">Simulate Real Shot Tracking</button>
+        </section>
 
-<div class="lane">
-<div class="ai"></div>
-</div>
+    </main>
 
-</div>
-
-</div>
-
-<!-- BATTERY -->
-
-<div class="screen" id="battery">
-
-<div class="logo">BATTERY AI</div>
-
-<div class="glass">
-
-<h2>Battery Analytics</h2>
-
-<br>
-
-<div class="chart">
-
-<div class="col" style="height:60%"></div>
-<div class="col" style="height:85%"></div>
-<div class="col" style="height:45%"></div>
-<div class="col" style="height:100%"></div>
-<div class="col" style="height:70%"></div>
-<div class="col" style="height:90%"></div>
-
-</div>
-
-<br>
-
-<h1 style="color:#00ff88">89%</h1>
-
-<p>Battery Health Excellent</p>
-
-<br>
-
-<div class="bar">
-<div class="fill"></div>
-</div>
-
-</div>
-
-</div>
-
-<div class="nav">
-
-<button onclick="show('home')">Dashboard</button>
-
-<button onclick="show('auto')">Autopilot</button>
-
-<button onclick="show('battery')">Battery</button>
-
-</div>
-
-<script>
-
-function show(id){
-
-document.querySelectorAll('.screen')
-.forEach(s=>s.classList.remove('active'));
-
-document.getElementById(id)
-.classList.add('active');
-
-}
-
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
