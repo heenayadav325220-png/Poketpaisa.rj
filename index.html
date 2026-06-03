@@ -119,33 +119,58 @@
             </div>
         </section>
 
-        <!-- 2. ASK CORE AI SECTION -->
+        <!-- 2. ASK CORE AI SECTION (ENHANCED UI) -->
         <section id="coreaiSection" class="app-section">
-            <div class="section-header">
-                <h2><i class="fa-solid fa-robot"></i> Core AI Coach</h2>
-                <button class="back-btn" onclick="showSection('home')">Back</button>
+            <!-- CORE AI HEADER -->
+            <div class="ai-header">
+                <div class="ai-logo-header">
+                    <svg class="core-ai-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="8" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div class="ai-header-text">
+                    <h2>Core AI</h2>
+                    <p>कोर एआई</p>
+                </div>
+                <button class="back-btn ai-back-btn" onclick="showSection('home')">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
             </div>
-            
+
+            <!-- CHAT MESSAGES AREA -->
             <div class="ai-chat-container">
-                <div class="ai-branding">
-                    <!-- Atom / Core AI Symbol -->
-                    <div class="atom-symbol" id="ai-atom">
-                        <div class="ring"></div>
-                        <div class="ring"></div>
-                        <div class="ring"></div>
-                        <div class="core-dot"></div>
-                    </div>
-                    <h3>Core AI Live</h3>
-                </div>
-
                 <div class="chat-output" id="chatOutput">
-                    <div class="msg ai-msg">Hi Rohit, main Core AI hoon, aapka personal cricket coach. Apni batting aur Grip Chip ka data analyze karne ke liye mujhse kuch bhi poohein!</div>
+                    <div class="msg ai-msg">
+                        <div class="ai-avatar">
+                            <svg class="core-ai-mini-logo" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="25" cy="25" r="22" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                <circle cx="25" cy="25" r="16" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                <circle cx="25" cy="25" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                <circle cx="25" cy="25" r="4" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div class="msg-content">Hi Rohit, main Core AI hoon, aapka personal cricket coach. Apni batting aur Grip Chip ka data analyze karne ke liye mujhse kuch bhi poohein!</div>
+                    </div>
                 </div>
 
+                <!-- CHAT INPUT SECTION -->
                 <div class="chat-input-area">
-                    <button class="input-addon-btn"><i class="fa-solid fa-bars"></i></button>
-                    <input type="text" id="userInput" placeholder="ASK Core AI..." onkeypress="handleKeyPress(event)">
-                    <button class="send-btn" onclick="sendMessageToAI()"><i class="fa-solid fa-paper-plane"></i></button>
+                    <div class="input-wrapper">
+                        <button class="input-addon-btn" title="Voice Input"><i class="fa-solid fa-microphone"></i></button>
+                        <input 
+                            type="text" 
+                            id="userInput" 
+                            placeholder="यहाँ सवाल करें..."
+                            onkeypress="handleKeyPress(event)"
+                        >
+                        <button class="input-addon-btn" title="Attach File"><i class="fa-solid fa-paperclip"></i></button>
+                        <button class="send-btn" onclick="sendMessageToAI()" title="Send">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
