@@ -3,12 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#121212">
+    <meta name="description" content="CORBAT - Smart Cricket Analyzer with AI coaching and grip chip tracking">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CORBAT">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23121212' width='180' height='180'/><text x='90' y='100' font-size='60' fill='%2300e676' text-anchor='middle' dominant-baseline='middle' font-weight='bold'>🏏</text></svg>">
+    <link rel="manifest" href="manifest.json">
     <title>CORBAT - Smart Cricket Analyzer</title>
     <link rel="stylesheet" href="style.css">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+    <!-- PWA INSTALL PROMPT MODAL -->
+    <div id="installPrompt" class="install-modal hidden">
+        <div class="install-modal-content">
+            <button class="install-close-btn" onclick="dismissInstallPrompt()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="install-icon">
+                <i class="fa-solid fa-download"></i>
+            </div>
+            <h3>Install CORBAT App</h3>
+            <p>Get instant access to cricket analysis & AI coaching on your device</p>
+            <div class="install-benefits">
+                <div class="benefit-item">
+                    <i class="fa-solid fa-zap"></i>
+                    <span>Works Offline</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fa-solid fa-rocket"></i>
+                    <span>Super Fast</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fa-solid fa-shield"></i>
+                    <span>App Privacy</span>
+                </div>
+            </div>
+            <button class="install-btn" onclick="installApp()">
+                <i class="fa-solid fa-download"></i> Install App
+            </button>
+            <button class="install-later-btn" onclick="dismissInstallPrompt()">Maybe Later</button>
+        </div>
+    </div>
 
     <!-- TOP NAVBAR -->
     <header class="top-navbar">
@@ -55,6 +94,16 @@
                 <li><a href="#" onclick="showSection('leaderboard')"><i class="fa-solid fa-trophy"></i> Leaderboard</a></li>
                 <li><a href="#" onclick="showSection('analysis')"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
             </ul>
+
+            <!-- INSTALL APP SECTION -->
+            <div class="install-section" id="installSection">
+                <h3><i class="fa-solid fa-download"></i> Install App</h3>
+                <p class="install-description">Install CORBAT as an app for instant access</p>
+                <button class="install-app-btn" id="installAppBtn" onclick="showInstallPrompt()">
+                    <i class="fa-solid fa-download"></i> Install
+                </button>
+                <p class="install-note">Available on iOS, Android & Web</p>
+            </div>
             
             <div class="sidebar-batches">
                 <h3>Batches & Records</h3>
@@ -272,5 +321,78 @@
     </main>
 
     <script src="script.js"></script>
+    <script>
+        // PWA INSTALL HANDLING
+        let deferredPrompt = null;
+        let isAppInstalled = false;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallSection();
+        });
+
+        window.addEventListener('appinstalled', () => {
+            isAppInstalled = true;
+            hideInstallSection();
+            console.log('CORBAT app installed successfully!');
+        });
+
+        function showInstallSection() {
+            const installSection = document.getElementById('installSection');
+            if (installSection) {
+                installSection.style.display = 'block';
+            }
+        }
+
+        function hideInstallSection() {
+            const installSection = document.getElementById('installSection');
+            if (installSection) {
+                installSection.style.display = 'none';
+            }
+        }
+
+        function showInstallPrompt() {
+            const installModal = document.getElementById('installPrompt');
+            if (installModal) {
+                installModal.classList.remove('hidden');
+            }
+        }
+
+        function dismissInstallPrompt() {
+            const installModal = document.getElementById('installPrompt');
+            if (installModal) {
+                installModal.classList.add('hidden');
+            }
+        }
+
+        async function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response: ${outcome}`);
+                deferredPrompt = null;
+                dismissInstallPrompt();
+            } else {
+                alert('Installation not available. Please use your browser menu.');
+            }
+        }
+
+        // Show install prompt after 3 seconds if not installed
+        setTimeout(() => {
+            if (!isAppInstalled && deferredPrompt) {
+                showInstallPrompt();
+            }
+        }, 3000);
+
+        // Register Service Worker for offline support
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(reg => {
+                console.log('Service Worker registered:', reg);
+            }).catch(err => {
+                console.log('Service Worker registration failed:', err);
+            });
+        }
+    </script>
 </body>
 </html>
