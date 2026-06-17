@@ -1,398 +1,262 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="classic">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#121212">
-    <meta name="description" content="CORBAT - Smart Cricket Analyzer with AI coaching and grip chip tracking">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="CORBAT">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23121212' width='180' height='180'/><text x='90' y='100' font-size='60' fill='%2300e676' text-anchor='middle' dominant-baseline='middle' font-weight='bold'>🏏</text></svg>">
-    <link rel="manifest" href="manifest.json">
-    <title>CORBAT - Smart Cricket Analyzer</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORE AI - Premium Robot Simulator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background: radial-gradient(circle at center,#1a1a1a,#050505);
+    font-family:Segoe UI,sans-serif;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    overflow:hidden;
+}
+
+h1{
+    color:#00ffcc;
+    margin-bottom:25px;
+    text-shadow:0 0 15px #00ffcc;
+    letter-spacing:2px;
+}
+
+.robot-screen{
+    width:320px;
+    height:240px;
+    background:#000;
+    border:4px solid #00ffcc;
+    border-radius:25px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+
+    box-shadow:
+    0 0 20px #00ffcc,
+    0 0 40px rgba(0,255,204,.5),
+    0 0 80px rgba(0,255,204,.2);
+
+    animation:floatRobot 4s ease-in-out infinite;
+}
+
+@keyframes floatRobot{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+.eyes-container{
+    display:flex;
+    gap:50px;
+}
+
+.eye{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:#00ffcc;
+
+    box-shadow:
+    0 0 15px #00ffcc,
+    0 0 30px #00ffcc,
+    0 0 50px #00ffcc;
+
+    animation:blink 5s infinite;
+    transition:.3s;
+}
+
+@keyframes blink{
+    0%,95%,100%{
+        transform:scaleY(1);
+    }
+    97%{
+        transform:scaleY(.1);
+    }
+}
+
+.status{
+    margin-top:20px;
+    color:#00ffcc;
+    font-weight:bold;
+    text-align:center;
+    padding:0 10px;
+}
+
+.thinking{
+    width:180px;
+    height:6px;
+    border-radius:20px;
+    background:#222;
+    margin-top:15px;
+    overflow:hidden;
+}
+
+.thinking span{
+    display:block;
+    width:40%;
+    height:100%;
+    background:#00ffcc;
+    animation:loading 2s linear infinite;
+}
+
+@keyframes loading{
+    0%{
+        transform:translateX(-100%);
+    }
+    100%{
+        transform:translateX(400%);
+    }
+}
+
+.controls{
+    margin-top:25px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+}
+
+button{
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    background:linear-gradient(135deg,#1f1f1f,#2f2f2f);
+    color:white;
+    transition:.3s;
+}
+
+button:hover{
+    background:#00ffcc;
+    color:black;
+    transform:scale(1.05);
+}
+
+.footer{
+    margin-top:20px;
+    color:#888;
+    font-size:13px;
+}
+</style>
 </head>
+
 <body>
 
-    <!-- PWA INSTALL PROMPT MODAL -->
-    <div id="installPrompt" class="install-modal hidden">
-        <div class="install-modal-content">
-            <button class="install-close-btn" onclick="dismissInstallPrompt()">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="install-icon">
-                <i class="fa-solid fa-download"></i>
-            </div>
-            <h3>Install CORBAT App</h3>
-            <p>Get instant access to cricket analysis & AI coaching on your device</p>
-            <div class="install-benefits">
-                <div class="benefit-item">
-                    <i class="fa-solid fa-zap"></i>
-                    <span>Works Offline</span>
-                </div>
-                <div class="benefit-item">
-                    <i class="fa-solid fa-rocket"></i>
-                    <span>Super Fast</span>
-                </div>
-                <div class="benefit-item">
-                    <i class="fa-solid fa-shield"></i>
-                    <span>App Privacy</span>
-                </div>
-            </div>
-            <button class="install-btn" onclick="installApp()">
-                <i class="fa-solid fa-download"></i> Install App
-            </button>
-            <button class="install-later-btn" onclick="dismissInstallPrompt()">Maybe Later</button>
-        </div>
+<h1>CORE AI</h1>
+
+<div class="robot-screen">
+
+    <div class="eyes-container">
+        <div class="eye" id="leftEye"></div>
+        <div class="eye" id="rightEye"></div>
     </div>
 
-    <!-- TOP NAVBAR -->
-    <header class="top-navbar">
-        <button id="menuBtn" class="nav-icon-btn"><i class="fa-solid fa-bars"></i></button>
-        <div class="logo-container">
-            <!-- Real Logo Design inside App -->
-            <div class="app-mini-logo">
-                <i class="fa-solid fa-baseball-bat-ball"></i>
-                <div class="chip-dot"></div>
-            </div>
-            <h1 class="app-logo">CORBAT</h1>
-        </div>
-        <button id="profileBtn" class="nav-icon-btn" onclick="toggleProfile()"><i class="fa-solid fa-user-circle"></i></button>
-    </header>
-
-    <!-- USER PROFILE SECTION (Login/Details Mock) -->
-    <div id="profileDropdown" class="profile-card">
-        <h3><i class="fa-solid fa-id-card"></i> User Profile</h3>
-        <p><strong>Name:</strong> Rohit Yadav</p>
-        <p><strong>Role:</strong> Batter / App Owner</p>
-        <button class="logout-btn" onclick="toggleProfile()">Close</button>
+    <div class="status" id="status">
+        CORE AI Ready 🤖
     </div>
 
-    <!-- SIDE NAVIGATION BAR (Full Screen Overlay) -->
-    <div id="sideNav" class="sidebar">
-        <div class="sidebar-header">
-            <span><i class="fa-solid fa-gear"></i> Settings & Themes</span>
-            <button id="closeBtn" class="close-btn">&times;</button>
-        </div>
-        <div class="sidebar-content">
-            <!-- Theme Selector -->
-            <div class="theme-selector-box">
-                <h4><i class="fa-solid fa-palette"></i> Select Theme</h4>
-                <div class="theme-buttons">
-                    <button class="theme-btn active" onclick="changeTheme('classic')">Classic</button>
-                    <button class="theme-btn neon-btn" onclick="changeTheme('neon')">Neon Border</button>
-                    <button class="theme-btn cyberpunk-btn" onclick="changeTheme('cyberpunk')">Cyberpunk</button>
-                </div>
-            </div>
-
-            <ul class="nav-links">
-                <li><a href="#" onclick="showSection('home')"><i class="fa-solid fa-house"></i> Home</a></li>
-                <li><a href="#" onclick="showSection('coreai')"><i class="fa-solid fa-microchip"></i> Ask Core AI</a></li>
-                <li><a href="#" onclick="showSection('leaderboard')"><i class="fa-solid fa-trophy"></i> Leaderboard</a></li>
-                <li><a href="#" onclick="showSection('analysis')"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
-            </ul>
-
-            <!-- INSTALL APP SECTION -->
-            <div class="install-section" id="installSection">
-                <h3><i class="fa-solid fa-download"></i> Install App</h3>
-                <p class="install-description">Install CORBAT as an app for instant access</p>
-                <button class="install-app-btn" id="installAppBtn" onclick="showInstallPrompt()">
-                    <i class="fa-solid fa-download"></i> Install
-                </button>
-                <p class="install-note">Available on iOS, Android & Web</p>
-            </div>
-            
-            <div class="sidebar-batches">
-                <h3>Batches & Records</h3>
-                <div class="batch-item">
-                    <i class="fa-solid fa-bolt speed-icon"></i>
-                    <span>Fastest Speed: <strong id="sidebar-fastest">145 km/h</strong></span>
-                </div>
-                <div class="batch-item">
-                    <i class="fa-solid fa-globe rank-icon"></i>
-                    <span>World Rank: <strong>#10</strong></span>
-                </div>
-            </div>
-        </div>
+    <div class="thinking">
+        <span></span>
     </div>
 
-    <!-- MAIN APP CONTAINER -->
-    <main class="app-container">
+</div>
 
-        <!-- 1. HOME SCREEN SECTION -->
-        <section id="homeSection" class="app-section active">
-            <div class="grid-buttons">
-                <button class="grid-btn" onclick="showSection('leaderboard')">
-                    <i class="fa-solid fa-crown"></i> Leader Board
-                </button>
-                <button class="grid-btn" onclick="showSection('analysis')">
-                    <i class="fa-solid fa-chart-pie"></i> ANALYSIS
-                </button>
-            </div>
+<div class="controls">
+    <button onclick="changeMood('happy')">👋 Hello</button>
+    <button onclick="changeMood('dance')">🕺 Dance</button>
+    <button onclick="changeMood('angry')">😡 Angry</button>
+    <button onclick="changeMood('think')">🧠 Think</button>
+    <button onclick="changeMood('reset')">🔄 Reset</button>
+</div>
 
-            <div class="list-buttons">
-                <button class="list-btn premium-btn" onclick="alert('Premium Feature: Filhal iski Jarurat nahi hai.')">
-                    <i class="fa-solid fa-star"></i> Premium Subscription
-                </button>
-                <button class="list-btn product-btn" onclick="alert('Product Store: Abhi jarurat nahi hai.')">
-                    <i class="fa-solid fa-box-open"></i> Our Products
-                </button>
-            </div>
+<div class="footer">
+    CORE AI Premium Simulator v2.0
+</div>
 
-            <div class="interactive-grid">
-                <div class="ask-ai-box" onclick="showSection('coreai')">
-                    <h3>ASK Core AI</h3>
-                    <p>Personal Assistant & Coach (Powered by Gemini 1.5 Flash)</p>
-                    <button class="ai-btn">Open Coach</button>
-                </div>
-                <div class="connect-device-box" onclick="showSection('connect')">
-                    <h3>Connect Device</h3>
-                    <div class="smart-bat-graphic">
-                        <i class="fa-solid fa-baseball-bat-ball bat-icon"></i>
-                        <span class="badge" id="connection-status">DISCONNECTED</span>
-                    </div>
-                    <button class="connect-btn">Manage Grip Chip</button>
-                </div>
-            </div>
+<script>
+const leftEye = document.getElementById("leftEye");
+const rightEye = document.getElementById("rightEye");
+const statusText = document.getElementById("status");
 
-            <!-- Interactive Tracking Display / Dynamic User Image Area -->
-            <div class="bottom-graphic">
-                <div class="stickman-container">
-                    <div id="live-graphic" class="live-action-avatar">🏏</div>
-                    <p id="live-status-text">Ready for Batting Session</p>
-                    <button class="change-graphic-btn" onclick="changeLiveGraphic()">Change Display</button>
-                </div>
-            </div>
-        </section>
+function speak(text){
+    if('speechSynthesis' in window){
+        speechSynthesis.cancel();
 
-        <!-- 2. ASK CORE AI SECTION (ENHANCED UI) -->
-        <section id="coreaiSection" class="app-section">
-            <!-- CORE AI HEADER -->
-            <div class="ai-header">
-                <div class="ai-logo-header">
-                    <svg class="core-ai-svg-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="50" cy="50" r="8" fill="currentColor"/>
-                    </svg>
-                </div>
-                <div class="ai-header-text">
-                    <h2>Core AI</h2>
-                    <p>कोर एआई</p>
-                </div>
-                <button class="back-btn ai-back-btn" onclick="showSection('home')">
-                    <i class="fa-solid fa-arrow-left"></i>
-                </button>
-            </div>
+        let msg = new SpeechSynthesisUtterance(text);
+        msg.lang = "hi-IN";
+        msg.rate = 1;
+        speechSynthesis.speak(msg);
+    }
+}
 
-            <!-- CHAT MESSAGES AREA -->
-            <div class="ai-chat-container">
-                <div class="chat-output" id="chatOutput">
-                    <div class="msg ai-msg">
-                        <div class="ai-avatar">
-                            <svg class="core-ai-mini-logo" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="25" cy="25" r="22" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                <circle cx="25" cy="25" r="16" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                <circle cx="25" cy="25" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                <circle cx="25" cy="25" r="4" fill="currentColor"/>
-                            </svg>
-                        </div>
-                        <div class="msg-content">Hi Rohit, main Core AI hoon, aapka personal cricket coach. Apni batting aur Grip Chip ka data analyze karne ke liye mujhse kuch bhi poohein!</div>
-                    </div>
-                </div>
+function changeMood(mood){
 
-                <!-- CHAT INPUT SECTION -->
-                <div class="chat-input-area">
-                    <div class="input-wrapper">
-                        <button class="input-addon-btn" title="Voice Input"><i class="fa-solid fa-microphone"></i></button>
-                        <input 
-                            type="text" 
-                            id="userInput" 
-                            placeholder="यहाँ सवाल करें..."
-                            onkeypress="handleKeyPress(event)"
-                        >
-                        <button class="input-addon-btn" title="Attach File"><i class="fa-solid fa-paperclip"></i></button>
-                        <button class="send-btn" onclick="sendMessageToAI()" title="Send">
-                            <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+    if(mood === "happy"){
+        leftEye.style.background="#00ffcc";
+        rightEye.style.background="#00ffcc";
 
-        <!-- 3. CONNECT DEVICE SECTION -->
-        <section id="connectSection" class="app-section">
-            <div class="section-header">
-                <h2><i class="fa-solid fa-link"></i> Connect Grip Chip</h2>
-                <button class="back-btn" onclick="showSection('home')">Back</button>
-            </div>
+        statusText.innerHTML="CORE AI: नमस्ते मानव 👋";
 
-            <div class="connection-methods">
-                <div class="method-card" onclick="startConnection('Scanner')">
-                    <i class="fa-solid fa-qrcode"></i>
-                    <h3>Scan QR Code</h3>
-                    <p>Scan the code printed on the grip chip</p>
-                </div>
+        speak("नमस्ते मानव");
+    }
 
-                <div class="method-card" onclick="startConnection('Bluetooth')">
-                    <i class="fa-solid fa-bluetooth"></i>
-                    <h3>Bluetooth Pairing</h3>
-                    <p>Search for nearby smart grip hardware</p>
-                </div>
+    else if(mood === "dance"){
+        leftEye.style.background="#ff00ff";
+        rightEye.style.background="#ff00ff";
 
-                <div class="method-card" onclick="promptCodeConnection()">
-                    <i class="fa-solid fa-keyboard"></i>
-                    <h3>Enter Secret Code</h3>
-                    <p>Type the chip identity code manually</p>
-                </div>
-            </div>
+        statusText.innerHTML="CORE AI: डांस मोड सक्रिय 🕺";
 
-            <div id="connection-progress-box" class="progress-log-box" style="display: none;">
-                <h4 id="progress-title">Connecting...</h4>
-                <div class="spinner"></div>
-                <p id="progress-details">Searching for device frequencies...</p>
-            </div>
-        </section>
+        speak("डांस मोड सक्रिय");
+    }
 
-        <!-- 4. LEADERBOARD SECTION -->
-        <section id="leaderboardSection" class="app-section">
-            <div class="section-header">
-                <h2><i class="fa-solid fa-trophy"></i> Top 10 Leaderboard</h2>
-                <button class="back-btn" onclick="showSection('home')">Back</button>
-            </div>
+    else if(mood === "angry"){
+        leftEye.style.background="#ff3333";
+        rightEye.style.background="#ff3333";
 
-            <div class="country-selector">
-                <label for="countrySelect">Select Country Region: </label>
-                <select id="countrySelect" onchange="updateLeaderboard()">
-                    <option value="global">Global</option>
-                    <option value="india">India</option>
-                    <option value="america">America</option>
-                    <option value="australia">Australia</option>
-                    <option value="pakistan">Pakistan</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
+        statusText.innerHTML="CORE AI: चेतावनी मोड 😡";
 
-            <div class="leaderboard-list" id="leaderboardData">
-                <!-- Data Real-Time inject values from JS -->
-            </div>
-        </section>
+        speak("चेतावनी मोड");
+    }
 
-        <!-- 5. ANALYSIS SECTION -->
-        <section id="analysisSection" class="app-section">
-            <div class="section-header">
-                <h2><i class="fa-solid fa-chart-line"></i> Performance Analysis</h2>
-                <button class="back-btn" onclick="showSection('home')">Back</button>
-            </div>
+    else if(mood === "think"){
+        leftEye.style.background="#00aaff";
+        rightEye.style.background="#00aaff";
 
-            <div class="analysis-card main-progress">
-                <h3>Overall Batting Progress</h3>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="mainProgress" style="width: 75%;">75%</div>
-                </div>
-            </div>
+        statusText.innerHTML="CORE AI: सोच रहा हूँ... 🧠";
 
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <span class="stat-label">Lowest Bat Speed</span>
-                    <span class="stat-value low" id="stat-lowest">32 km/h</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">Highest Bat Speed</span>
-                    <span class="stat-value high" id="stat-highest">145 km/h</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">Shot Direction Accuracy</span>
-                    <span class="stat-value" style="color: #2979ff;">84%</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">Sensor Chip Status</span>
-                    <span class="stat-value" id="stat-sensor-status" style="color: #ff5252;">OFFLINE</span>
-                </div>
-            </div>
+        speak("मैं सोच रहा हूँ");
+    }
 
-            <button class="simulate-shot-btn" onclick="simulateGripData()">Simulate Real Shot Tracking</button>
-        </section>
+    else if(mood === "reset"){
+        leftEye.style.background="#00ffcc";
+        rightEye.style.background="#00ffcc";
 
-    </main>
+        statusText.innerHTML="CORE AI Ready 🤖";
 
-    <script src="script.js"></script>
-    <script>
-        // PWA INSTALL HANDLING
-        let deferredPrompt = null;
-        let isAppInstalled = false;
+        speak("सिस्टम रीसेट पूर्ण");
+    }
+}
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            showInstallSection();
-        });
+window.onload=()=>{
+    speak("कोर ए आई तैयार है");
+};
+</script>
 
-        window.addEventListener('appinstalled', () => {
-            isAppInstalled = true;
-            hideInstallSection();
-            console.log('CORBAT app installed successfully!');
-        });
-
-        function showInstallSection() {
-            const installSection = document.getElementById('installSection');
-            if (installSection) {
-                installSection.style.display = 'block';
-            }
-        }
-
-        function hideInstallSection() {
-            const installSection = document.getElementById('installSection');
-            if (installSection) {
-                installSection.style.display = 'none';
-            }
-        }
-
-        function showInstallPrompt() {
-            const installModal = document.getElementById('installPrompt');
-            if (installModal) {
-                installModal.classList.remove('hidden');
-            }
-        }
-
-        function dismissInstallPrompt() {
-            const installModal = document.getElementById('installPrompt');
-            if (installModal) {
-                installModal.classList.add('hidden');
-            }
-        }
-
-        async function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response: ${outcome}`);
-                deferredPrompt = null;
-                dismissInstallPrompt();
-            } else {
-                alert('Installation not available. Please use your browser menu.');
-            }
-        }
-
-        // Show install prompt after 3 seconds if not installed
-        setTimeout(() => {
-            if (!isAppInstalled && deferredPrompt) {
-                showInstallPrompt();
-            }
-        }, 3000);
-
-        // Register Service Worker for offline support
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(reg => {
-                console.log('Service Worker registered:', reg);
-            }).catch(err => {
-                console.log('Service Worker registration failed:', err);
-            });
-        }
-    </script>
 </body>
 </html>
